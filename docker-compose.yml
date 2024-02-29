@@ -1,0 +1,49 @@
+name: fc3-docker
+
+services:
+  app:
+    container_name: nodeapp
+    image: mestremurai/nodeapp
+    build: ./node
+    entrypoint: dockerize -wait tcp://bd:3306 -timeout 20s docker-entrypoint.sh
+    command: ["node", "index.js"]
+    # command: ["node", "index-bootstrap.js"]
+    tty: true
+    ports:
+      - "3000:3000"
+    networks:
+      - desafionet
+    depends_on:
+      - bd
+
+  bd:
+    container_name: mysqlbd
+    image: mysql:8.3.0
+    env_file:
+      - ./mysql/.env
+    volumes:
+      - ./mysql/bdfc3:/var/lib/mysql
+    restart: always
+    tty: true
+    networks: 
+      - desafionet
+
+  proxy:
+    container_name: nginx
+    image: mestremurai/nginx
+    build: ./nginx
+    entrypoint: wait-for app:3000 -t 30 -- /docker-entrypoint.sh
+    command: ["nginx", "-g", "daemon off;"]
+    restart: always
+    tty: true
+    ports:
+      - "8080:80"
+    networks:
+      - desafionet
+    depends_on:
+      app:
+        condition: service_started
+
+networks: 
+  desafionet:
+    driver: bridge
