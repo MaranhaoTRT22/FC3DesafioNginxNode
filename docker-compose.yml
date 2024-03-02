@@ -7,8 +7,9 @@ services:
     build: ./node
     entrypoint: dockerize -wait tcp://bd:3306 -timeout 20s docker-entrypoint.sh
     command: ["node", "index.js"]
-    # command: ["node", "index-bootstrap.js"]
     tty: true
+    volumes:
+      - ./node/app:/usr/src/app
     ports:
       - "3000:3000"
     networks:
@@ -41,8 +42,7 @@ services:
     networks:
       - desafionet
     depends_on:
-      app:
-        condition: service_started
+      - app
 
 networks: 
   desafionet:

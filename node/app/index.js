@@ -44,7 +44,7 @@ conexao.connect(function (err) {
     sql = 'INSERT INTO people(nome, sobrenome, email) VALUES (?,?,?), (?,?,?), (?,?,?)';
     const values = [
         'Luiz', 'Maranhao', 'laom@trt22.jus.br',
-        'Carlos', 'Germano', 'cgermano@vasco.com.br',
+        'Baixinho', 'Romario', 'cgermano@vasco.com.br',
         'Roberto', 'Dinamite', 'dinamite@vasco.com.br'
     ];
     conexao.execute(sql, values, (err, result, fields) => {
