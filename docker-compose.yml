@@ -5,10 +5,13 @@ services:
     container_name: nodeapp
     image: mestremurai/nodeapp
     build: ./node
+    env_file:
+      - path: ./node/app/.env
     entrypoint: dockerize -wait tcp://bd:3306 -timeout 20s docker-entrypoint.sh
     command: ["node", "index.js"]
     tty: true
     volumes:
+      - node_modules:/usr/src/app/node_modules
       - ./node/app:/usr/src/app
     ports:
       - "3000:3000"
@@ -21,9 +24,9 @@ services:
     container_name: mysqlbd
     image: mysql:8.3.0
     env_file:
-      - ./mysql/.env
+      - path: ./node/app/.env
     volumes:
-      - ./mysql/bdfc3:/var/lib/mysql
+      - bdfc3:/var/lib/mysql
     restart: always
     tty: true
     networks: 
@@ -47,3 +50,7 @@ services:
 networks: 
   desafionet:
     driver: bridge
+
+volumes:
+  node_modules:
+  bdfc3:

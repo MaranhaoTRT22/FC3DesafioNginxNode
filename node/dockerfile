@@ -9,10 +9,12 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 
 WORKDIR /usr/src/app
 
-RUN npm install express mysql2
+COPY ./app/package*.json .
 
-COPY ./app ./
+RUN npm install
+
+COPY ./app .
 
 EXPOSE 3000
 
-#CMD [ "node" , "index.js" ]
+CMD [ "node" , "index.js" ]

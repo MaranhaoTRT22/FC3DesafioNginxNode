@@ -4,10 +4,10 @@ const mysql = require('mysql2');
 const app = express();
 const port = 3000;
 const config = {
-    host: 'bd',
-    user: 'laom',
-    password: 'vasco',
-    database: 'nodebd'
+    host: process.env.MYSQL_HOST,
+    database: process.env.MYSQL_DATABASE,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD
 };
 
 let sql;
@@ -44,7 +44,7 @@ conexao.connect(function (err) {
     sql = 'INSERT INTO people(nome, sobrenome, email) VALUES (?,?,?), (?,?,?), (?,?,?)';
     const values = [
         'Luiz', 'Maranhao', 'laom@trt22.jus.br',
-        'Baixinho', 'Romario', 'cgermano@vasco.com.br',
+        'Baixinho', 'Romario', 'romario@vasco.com.br',
         'Roberto', 'Dinamite', 'dinamite@vasco.com.br'
     ];
     conexao.execute(sql, values, (err, result, fields) => {
