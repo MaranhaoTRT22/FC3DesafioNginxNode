@@ -6,7 +6,7 @@ RUN apt-get update &&\
     apt-get -y install netcat wget &&\
     apt-get clean cache
 
-RUN wget -qO /usr/bin/wait-for https://raw.githubusercontent.com/eficode/wait-for/$WAIT_FOR_VERSION/wait-for && \
+RUN wget -qO /usr/bin/wait-for https://raw.githubusercontent.com/eficode/wait-for/$WAIT_FOR_VERSION/wait-for &&\
     chmod +x /usr/bin/wait-for
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
