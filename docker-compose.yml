@@ -7,18 +7,15 @@ services:
     build: ./node
     env_file:
       - path: ./node/app/.env
-    entrypoint: dockerize -wait tcp://bd:3306 -timeout 20s docker-entrypoint.sh
-    command: ["node", "index.js"]
+    entrypoint: sh -c "npm install && node index.js"
     tty: true
     volumes:
-      - node_modules:/usr/src/app/node_modules
       - ./node/app:/usr/src/app
-    ports:
-      - "3000:3000"
     networks:
       - desafionet
     depends_on:
-      - bd
+      bd:
+        condition: service_healthy
 
   bd:
     container_name: mysqlbd
@@ -28,6 +25,11 @@ services:
     volumes:
       - bdfc3:/var/lib/mysql
     restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
     tty: true
     networks: 
       - desafionet
@@ -52,5 +54,4 @@ networks:
     driver: bridge
 
 volumes:
-  node_modules:
   bdfc3:

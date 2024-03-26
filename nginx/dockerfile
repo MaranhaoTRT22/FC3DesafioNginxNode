@@ -1,4 +1,4 @@
-FROM nginx:stable
+FROM nginx:1.24.0
 
 ENV WAIT_FOR_VERSION d48601a8a90c3d22fade68d09b4240739fb44a46
 
